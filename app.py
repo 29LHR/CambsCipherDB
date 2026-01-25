@@ -5,11 +5,14 @@ from flask_cors import CORS
 from datetime import datetime
 from sqlalchemy import func
 import os
+from dotenv import load_dotenv
 import functools
 
+
+load_dotenv()
 # Enforce API key protection for all endpoints. Set DB_API_KEY in the environment
 # and clients must send header `X-API-KEY` with this value.
-EXPECTED_API_KEY = os.environ.get('DB_API_KEY')
+EXPECTED_API_KEY = os.getenv('DB_API_KEY')
 if not EXPECTED_API_KEY:
     raise RuntimeError("DB_API_KEY must be set for the DB service")
 
@@ -25,7 +28,7 @@ def require_api_key(fn):
 app = Flask(__name__)
 CORS(app)
 
-database_url = os.environ.get('DATABASE_URL') or 'sqlite:///db.sqlite'
+database_url = os.getenv('DATABASE_URL') or 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -303,5 +306,5 @@ def api_leaderboard():
     return jsonify(out)
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', '5600'))
+    port = int(os.getenv('PORT', '5600'))
     app.run(host='127.0.0.1', port=port, debug=True)
