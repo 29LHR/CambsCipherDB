@@ -14,7 +14,7 @@ challenges_data = [
         "published": True,
         "ciphertext": "Jryy qbar sbe penpxvat gur EBG-guvegrra pvcure va guvf vagebqhpgvba gb gur Pnzof Pvcure. Trg ernql sbe gur zvk bs qvnevrf, yrggref naq bgure svpgvbany fgngrzragf pbzvat lbhe jnl guebhtubhg gur pbhefr bs gurfr punyyratrf. Tbbq yhpx naq znl gur bqqf or rire va lbhe snibhe. C.F. Jura fbyivat gur punyyratrf znxr fher gb yrnir nal zvfgnxrf va fcryyvat naq tenzzne gung jr zvtug’ir yrsg va gurer gb gevpx lbh nybat jvgu cnqqvat punenpgref vs arprffnel nygubhtu chapghngvba naq pnfvat vf pbzcyrgryl gnxra bhg va znexvat.",
         "plaintext": "Well done for cracking the ROT-thirteen cipher in this introduction to the Cambs Cipher. Get ready for the mix of diaries, letters and other fictional statements coming your way throughout the course of these challenges. Good luck and may the odds be ever in your favour. P.S. When solving the challenges make sure to leave any mistakes in spelling and grammar that we might’ve left in there to trick you along with padding characters if necessary although punctuation and casing is completely taken out in marking.",
-        "tips": "This is a Caesar cipher with a shift of 3. Each letter is shifted forward by 3 positions in the alphabet.",
+        "tips": "This is a Caesar cipher with a shift of 13. Each letter is shifted forward by 13 positions in the alphabet.",
         "points_reward": 0,
         "release_time": None,  # Always available
         "closing_time": None   # Never closes
