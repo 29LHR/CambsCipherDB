@@ -1,170 +1,1 @@
-"""
-Script to seed the database with initial challenges.
-Run this after starting the app once to create the database.
-"""
-from app import app, db, Challenges
-from datetime import datetime
-
-# Sample challenges - customize these as needed
-# release_time and closing_time can be None (always open) or datetime objects
-challenges_data = [
-    {
-        "id": 1,
-        "title": "Introduction",
-        "published": True,
-        "ciphertext": "Jryy qbar sbe penpxvat gur EBG-guvegrra pvcure va guvf vagebqhpgvba gb gur Pnzof Pvcure. Trg ernql sbe gur zvk bs qvnevrf, yrggref naq bgure svpgvbany fgngrzragf pbzvat lbhe jnl guebhtubhg gur pbhefr bs gurfr punyyratrf. Tbbq yhpx naq znl gur bqqf or rire va lbhe snibhe. C.F. Jura fbyivat gur punyyratrf znxr fher gb yrnir nal zvfgnxrf va fcryyvat naq tenzzne gung jr zvtug’ir yrsg va gurer gb gevpx lbh nybat jvgu cnqqvat punenpgref vs arprffnel nygubhtu chapghngvba naq pnfvat vf pbzcyrgryl gnxra bhg va znexvat.",
-        "plaintext": "Well done for cracking the ROT-thirteen cipher in this introduction to the Cambs Cipher. Get ready for the mix of diaries, letters and other fictional statements coming your way throughout the course of these challenges. Good luck and may the odds be ever in your favour. P.S. When solving the challenges make sure to leave any mistakes in spelling and grammar that we might’ve left in there to trick you along with padding characters if necessary although punctuation and casing is completely taken out in marking.",
-        "tips": "This is a Caesar cipher with a shift of 13. Each letter is shifted forward by 13 positions in the alphabet.",
-        "points_reward": 0,
-        "release_time": None,  # Always available
-        "closing_time": None   # Never closes
-    },
-    {
-        "id": 2,
-        "title": "Challenge 1 (Practice)",
-        "published": False,
-        "ciphertext": "WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ",
-        "plaintext": "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG",
-        "tips": "Another Caesar cipher. Try different shift values!",
-        "points_reward": 0,
-        "release_time": datetime(2025, 12, 28, 21, 0),
-        "closing_time": datetime(2025, 12, 28, 21, 40)
-    },
-    {
-        "id": 3,
-        "title": "Challenge 2 (Practice)",
-        "published": False,
-        "ciphertext": "GUVF VF N FRPERG ZRFFNTR",
-        "plaintext": "THIS IS A SECRET MESSAGE",
-        "tips": "This is a ROT13 cipher - each letter is shifted by 13 positions.",
-        "points_reward": 0,
-        "release_time": datetime(2025, 12, 29, 21, 0),
-        "closing_time": datetime(2025, 12, 29, 21, 40)
-    },
-    {
-        "id": 4,
-        "title": "Challenge 3 (Practice)",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 0,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 5,
-        "title": "Challenge 4",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 15,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 6,
-        "title": "Challenge 5",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 30,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 7,
-        "title": "Challenge 6",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 45,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 8,
-        "title": "Challenge 7",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 60,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 9,
-        "title": "Challenge 8",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 75,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 10,
-        "title": "Challenge 9",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 90,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 11,
-        "title": "Challenge 10",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 105,
-        "release_time": None,
-        "closing_time": None
-    },
-    {
-        "id": 12,
-        "title": "Challenge 11",
-        "published": False,
-        "ciphertext": "",
-        "plaintext": "",
-        "tips": "",
-        "points_reward": 120,
-        "release_time": None,
-        "closing_time": None
-    }
-]
-
-with app.app_context():
-    # Clear existing challenges
-    Challenges.query.delete()
-    
-    # Add new challenges
-    for data in challenges_data:
-        challenge = Challenges(
-            id=data["id"]-1,  # Adjusting ID to be zero-based # type: ignore
-            title=data["title"], # type: ignore
-            published=data["published"], # type: ignore
-            ciphertext=data["ciphertext"], # type: ignore
-            plaintext=data["plaintext"], # type: ignore
-            tips=data["tips"], # type: ignore
-            points_reward=data["points_reward"], # type: ignore
-            release_time=data["release_time"], # type: ignore
-            closing_time=data["closing_time"] # type: ignore
-        )
-        db.session.add(challenge)
-    
-    db.session.commit()
-    print(f"Successfully added {len(challenges_data)} challenges!")
-    
-    # Show summary
-    published = Challenges.query.filter_by(published=True).count()
-    unpublished = Challenges.query.filter_by(published=False).count()
-    print(f"Published: {published}, Unpublished: {unpublished}")
+"""Script to seed the database with initial challenges.Run this after starting the app once to create the database."""from app import app, db, Challengesfrom datetime import datetime# Sample challenges - customize these as needed# release_time and closing_time can be None (always open) or datetime objectschallenges_data = [    {        "id": 1,        "title": "Introduction",        "published": True,        "ciphertext": "Jryy qbar sbe penpxvat gur EBG-guvegrra pvcure va guvf vagebqhpgvba gb gur Pnzof Pvcure. Trg ernql sbe gur zvk bs qvnevrf, yrggref naq bgure svpgvbany fgngrzragf pbzvat lbhe jnl guebhtubhg gur pbhefr bs gurfr punyyratrf. Tbbq yhpx naq znl gur bqqf or rire va lbhe snibhe. C.F. Jura fbyivat gur punyyratrf znxr fher gb yrnir nal zvfgnxrf va fcryyvat naq tenzzne gung jr zvtug’ir yrsg va gurer gb gevpx lbh nybat jvgu cnqqvat punenpgref vs arprffnel nygubhtu chapghngvba naq pnfvat vf pbzcyrgryl gnxra bhg va znexvat.",        "plaintext": "Well done for cracking the ROT-thirteen cipher in this introduction to the Cambs Cipher. Get ready for the mix of diaries, letters and other fictional statements coming your way throughout the course of these challenges. Good luck and may the odds be ever in your favour. P.S. When solving the challenges make sure to leave any mistakes in spelling and grammar that we might’ve left in there to trick you along with padding characters if necessary although punctuation and casing is completely taken out in marking.",        "tips": "This is a Caesar cipher with a shift of 13. Each letter is shifted forward by 13 positions in the alphabet.",        "points_reward": 0,        "release_time": None,  # Always available        "closing_time": None   # Never closes    },    {        "id": 2,        "title": "Challenge 1 (Practice)",        "published": True,        "ciphertext": "Patk Komnzkkt-Ykbktze - Znk gox ot vurozoigr ioxirky mxucy nkgbokx he znk jge, znuamn uazcgxjre grr xksgoty igrs. Ot znk ingshkxy gtj ygruty znkxk oy sain zgrq ul Yvgot gtj ozy bgigtz znxutk, g sgzzkx cnoin ot ozykrl uamnz tuz zu zxuahrk znk vkgik ul Kaxuvk, ekz cnoin Lxgtik ykksy jkzkxsotkj zu zxkgz gy g suxzgr otyarz. Znk igtjojgzaxk ul Vxotik Rkuvurj ngy yzoxxkj Vgxoy otzu g lkbkx ul yayvoiout, gy ol Vxayyog ckxk iutyvoxotm zu ktioxirk znks, cnkt ot zxazn ck ngbk yuamnz utre jomtoze gtj joyixkzout. O igttuz nkrv haz lkkr zngz znk Lxktin mubkxtsktz oy ykgxinotm lux g vxkzkdz. Tgvurkut OOO oy vxkyykj ut grr yojky -- he vahroi uvotout, he cuatjkj vxojk, he znk lkgx zngz Vxayyog’y mxucotm atoze sge kirovyk Lxgtik’y rutm-irgoskj yavxksgie. Znkox tkcyvgvkxy mxuc kbkx suxk ynxorr, yvkgqotm ul nutuax gtj nasorogzout, cnork uaxy axmk xkyzxgotz, znuamn loxstkyy sayz giiusvgte oz. Noy Sgpkyze znk Qotm xksgoty igazouay, gtj Hoysgxiq, gy kbkx, yvkgqy rozzrk ot vahroi, ekz utk yktyky igriargzout hktkgzn znk yaxlgik. Gsutm se iurrkgmaky znkxk oy g waokz iutlojktik ot uax vxkvgxkjtkyy. Znk gxse oy uxmgtoykj, znk xgorcgey vrgttkj zu znk rgyz jkzgor, gtj znk yuaznkxt yzgzky cgzin kbktzy iruykre, qtucotm zngz Lxktin gmmxkyyout cuarj hotj znks suxk zomnzre zu ay. Yzorr, O cuarj hk joynutkyz ol O irgoskj tu gtdokze. Cgx, utik atrkgynkj, uhkey tkoznkx xkgyut tux otzktzout. Ot vxobgzk susktzy O cutjkx cnkznkx Kaxuvk zxare atjkxyzgtjy nuc lxgmork vkgik ngy hkiusk. G zkrkmxgs, g yvkkin, g igxkrkyy vnxgyk sge yalloik zu atju ekgxy ul jovrusgie. Ck yvkgq ul tgzoutgr otzkxkyz gtj noyzuxoigr jkyzote, ekz oz oy uxjotgxe skt cnu corr hkgx znk iuyz. Lux tuc, ck cgoz -- uazcgxjre igrs, otcgxjre hxgikj -- nuvotm zngz Lxgtik corr yzkv hgiq lxus znk hxotq, kbkt gy ck vxkvgxk lux znk susktz ynk sge tuz.",        "plaintext": "June Eighteen-Seventy - The air in political circles grows heavier by the day, though outwardly all remains calm. In the chambers and salons there is much talk of Spain and its vacant throne, a matter which in itself ought not to trouble the peace of Europe, yet which France seems determined to treat as a mortal insult. The candidature of Prince Leopold has stirred Paris into a fever of suspicion, as if Prussia were conspiring to encircle them, when in truth we have sought only dignity and discretion. I cannot help but feel that the French government is searching for a pretext. Napoleon III is pressed on all sides — by public opinion, by wounded pride, by the fear that Prussia’s growing unity may eclipse France’s long-claimed supremacy. Their newspapers grow ever more shrill, speaking of honour and humiliation, while ours urge restraint, though firmness must accompany it. His Majesty the King remains cautious, and Bismarck, as ever, speaks little in public, yet one senses calculation beneath the surface. Among my colleagues there is a quiet confidence in our preparedness. The army is organised, the railways planned to the last detail, and the southern states watch events closely, knowing that French aggression would bind them more tightly to us. Still, I would be dishonest if I claimed no anxiety. War, once unleashed, obeys neither reason nor intention. In private moments I wonder whether Europe truly understands how fragile peace has become. A telegram, a speech, a careless phrase may suffice to undo years of diplomacy. We speak of national interest and historical destiny, yet it is ordinary men who will bear the cost. For now, we wait — outwardly calm, inwardly braced — hoping that France will step back from the brink, even as we prepare for the moment she may not.",        "tips": "A Caesar cipher. Try different shift values!",        "points_reward": 0,        "release_time": datetime(2026, 3, 3, 16, 30),        "closing_time": datetime(2026, 3, 9, 23, 59)    },    {        "id": 3,        "title": "Challenge 2 (Practice)",        "published": True,        "ciphertext": "CNERX BZAMX XGLXO XGMRM ABLFH KGBGZ LITIX KLATO XUKHN ZAMZK TOXGX PLBGW XXWPT KATLU KHDXG HNMNI HGMAX VHGMB GXGMU XMPXX GYKTG VXTGW IKNLL BTMAB GZEHG ZYXTK XWRXM LVTKV XERUX EBXOX WNGMB EGHPB MTIIX TKLMA TMTJN TKKHO XKMAXL ITGBL ALNVV XLLBH GHYTE EMABG ZLATL UXXGM AXLIT KDLHF XBGLN EMXWM XEXZK TFTEM XKXWT GWINU EBLA X W ATLBG YETFX W YKXG VAI KB WX TGWWK BOXG M A XXFIX KHKL ZHOXK GFXGM MHWXV ETKXP TKAHP LPBYM ERLNV AFTMM XKLIT LLYKH FWBIE HFTMB VFNKF NKLMH MAXMA NGWXK HYVTG GHGMA HNZAM AXLMK NZZEX BLYTK YKHFH NKLAH KXLBV TGGHM AXEIU NMYXX ENGXT LRMAX KXBLT LXGLX MATMX NKHIX LMTGW LNIHG TDGBY X LXWZX IKNLL BTLHF XMAHW BVTET GWPXE EWKBE EXWGH PLMTG WLTZT BGLMY KTGVX IKHNW TGWJN BVDMH MTDXH YYXGV XMAXIT IXKLL IXTDV HGYBW XGMER HYYKX GVAAH GHNKT GWIKN LLBTG XYYBV BXGVR RXMRH GXLNL IXVML MAXKX TEBMR PBEEU XFXTL NKXWB GUEHH WKTMA XKMAT GKAXM HKBVB KXTWM AXKXI HKMLH OXKUK XTDYT LMMAX VETMM XKHYV NILLH NGWBG ZBGWX VXGME RVAXX KYNEU XLBWX LNVAG XPLBG XGZET GW EBY XIKH V XXWL TLNLN TEMAX LAHILP XKXHI XGMAX LMKXX MLUNL RTGWM AXKXB LGHMT EDHY X GEBLM FXGMH K FHUB EBLTM BHGHG ERLIX VNETM BHGPX TKXY HKMNG TMXBL NIIHLX MHUXL IXVMT MHKLK TMAXK MATGI TKMBV BITGM LMAHN ZA MAT MOXKR WBLMT GVXUK XXWLB MLHPG TGQBX MRLAH NEWMA XPTKL IKXTW HKWBL MNKUM AXUTE TGVXH YIHPX KBMFT RXMMH NVANL TEEMA XKXBL TELHV HGVXK GYHKU XEZ BN F PAHLX GXNMK TEBMR FNLMU XIKXL XKOXW MAXZH O XKGF XGMBT FMHEW BLTEK XTWRX GZTZX WBGJN BXMTL LNKTG VXLHG MATMY KHGMT MAHFX MABL X O XGBG ZFRPB YXTLD XWPAX MAXKP XLAHN EW UXPH KKBXW BMHEW AXKGH GHMBF FXWBT MXER RXMFR HPGFB GWBLG HM LH LXMME XWPTK LATOX T PTRH YZKHP BGZUX RHGWM AXBKU XZBGG BGZLY HKGHP PXPTM VAKXT WTGWA HIXMA TMKXT LHGFT RKXMN KGFHK XJNB V DERMA TGBMA TLWXI TKMXW",        "plaintext": "July Eighteen-Seventy - This morning’s papers have brought grave news indeed. War has broken out upon the Continent between France and Prussia, a thing long feared yet scarcely believed until now. It appears that a quarrel over the Spanish succession, of all things, has been the spark — some insulted telegram, altered and published, has inflamed French pride and driven the Emperor’s government to declare war. How swiftly such matters pass from diplomatic murmurs to the thunder of cannon! Though the struggle is far from our shores, I cannot help but feel uneasy. There is a sense that Europe stands upon a knife’s edge. Prussia, so methodical and well-drilled, now stands against France, proud and quick to take offence. The papers speak confidently of French honour and Prussian efficiency, yet one suspects the reality will be measured in blood rather than rhetoric. I read the reports over breakfast, the clatter of cups sounding indecently cheerful beside such news. In England, life proceeds as usual. The shops were open, the streets busy, and there is no talk of enlistment or mobilisation, only speculation. We are fortunate, I suppose, to be spectators rather than participants, though that very distance breeds its own anxiety. Should the war spread, or disturb the balance of power, it may yet touch us all. There is also concern for Belgium, whose neutrality must be preserved; the government, I am told, is already engaged in quiet assurances on that front. At home this evening, my wife asked whether we should be worried. I told her no — not immediately — yet my own mind is not so settled. Wars have a way of growing beyond their beginnings. For now, we watch, read, and hope that reason may return more quickly than it has departed.",        "tips": "I have removed all of the spacing and punctuation but the cipher should be familiar by now so good luck!",        "points_reward": 0,        "release_time": datetime(2026, 3, 10, 16, 30),        "closing_time": datetime(2026, 3, 16, 23, 59)    },    {        "id": 4,        "title": "Challenge 3 (Practice)",        "published": True,        "ciphertext": "SBNKN WQLRY NQSNP EVYQS CHHIT PKQCK JYBNV EVKEQ HNNMW LTHEK LSGLJ NWVPWC SBMPT QQCVC QKLWV RVGSK LHLKA NPSBN EVPFP TJLTP WBCQM NPNEC KGVRNQ ITSVE NGHVP VSCLK MPCKS NECKI HVGFC KFRLP VHHSL QNNSB NQSPN NSQSL EVYWN PNVHCU NWCSB QBLTS CKAVK ESPCG LHLTP QJNKG PYCKA VINPH CKVQS BLTAB UCGSL PYWNP NVHPN VEYVQ QTPNE CDLCK NESB NGBLP TQRLP VJLJN KSBLW GLTHE LKNKL SRLPSB NCKQT HSBVQ INNKF NNKHY RNHSV KESBN MPTQQ CVKQB VUNHL KAWVS GBNET QWCSB GLHEG VHGTH VSCKA NYNQS BNCPV PPLAV KGNSB NCPNK EHNQQ EPCHH CKASB NCPMP NSNKG NLRLPE NPVKE ECQGC MHCKN VQCRQ TGBSB CKAQ AVUNS BNJSB NPCAB SSLEC GSVSN NTPL M NQRVS NCSQS CPQVK ANPCK SBNIH LLEVK EYNSIN KNVSB SBNKL CQNVK ESBNM VSPCL SCGRN PULTC VJVR PVCEC SBCKF LRJYI PLSB N PWBLW CHHQT PNHYI NGVHH NETMV KELRJ YGLTQ CKVHQ VGNQL GHLQN SLSBN RPLKS CNPSB VSSBN QLTKE LRJVP GBCKA ILLSQ JVYQ LLKPN VGBBC QELLP JYJLS BNPSP CNESL QMNVF IPVUN HYSBC QVRS NPKLL KQVYC KARPV KGNBV QKNUN PRVCH NEWBN KBNPB LKLTP CQGBV HHNKA NEITS CQVW B NPBVK EQSPN JIHCK AVQQB NRLHE NESBN MVMNP CSCQN VQYRL PSBNG PLWEQ SLBVS NSBNM PTQQC VKQCK SBNVI QSPVG SCSC QBVPE NPWBN KLKNC JVACK NQQBN HHQRV HHCKA LKPNV HBLJN QVKET KCRLP JQPNS TPKCK ANJMS YSBNYS NHHTQ SBCQW VPWCH HIN QWCRS SBVSL TPVPJ YWCHH BTJIH NMPTQ QCVVK EPNQS LPNRP VKGNQ AHLPY CWVKS SLINH CNUNC SCSNH HJYQ N HRS BVSLT PGVTQ NCQDT QSSBV SLTPN J MNPL PFKLW QWBVS BNELN QQSCH HVQKC ABSRV HHQ S BNGBN NPQRV ENVKE CVJHN RSWCS BVICS SNPJCX LRMPC ENVEK EPNVE BVSPN ERLPSB NNKNJ YYNQIT SVKNUN KQSP L KANPR NVPRL PSBLQ NCHLU NWBLW CHHMV YSBNM PCGNL RCS",        "plaintext": "The news of yesterday still burns in my head, and sleep would not come. War with Prussia is now a fact, no longer the dark rumour whispered in cafés but a declaration printed in black ink for all to see. The streets today were alive with shouting and tricolours, men crying “À Berlin !” as though victory were already assured. I joined the chorus for a moment — how could one not? — for the insult has been keenly felt, and the Prussians have long watched us with cold, calculating eyes. Their arrogance, their endless drilling, their pretence of order and discipline as if such things gave them the right to dictate Europe’s fate — it stirs anger in the blood.And yet, beneath the noise and the patriotic fervour, I am afraid.I think of my brother, who will surely be called up, and of my cousin in Alsace, so close to the frontier that the sound of marching boots may soon reach his door. My mother tried to speak bravely this afternoon, saying France has never failed when her honour is challenged, but I saw her hands trembling as she folded the paper. It is easy for the crowds to hate the Prussians in the abstract; it is harder when one imagines shells falling on real homes, and uniforms returning empty. They tell us this war will be swift, that our army will humble Prussia and restore France’s glory. I want to believe it. I tell myself that our cause is just, that our Emperor knows what he does. Still, as night falls, the cheers fade, and I am left with a bitter mix of pride and dread — hatred for the enemy, yes, but an even stronger fear for those I love, who will pay the price of it.",        "tips": "This is a similar cipher to the Caesar but using alphabets instead of numbers just give it a go - you'll find it out eventually!",        "points_reward": 0,        "release_time": datetime(2026, 3, 17, 16, 30),        "closing_time": datetime(2026, 3, 23, 23, 59)    },    {        "id": 5,        "title": "Challenge 4",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 15,        "release_time": datetime(2026, 3, 24, 16, 30),        "closing_time": datetime(2026, 3, 30, 23, 59)    },    {        "id": 6,        "title": "Challenge 5",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 30,        "release_time": datetime(2026, 4, 21, 16, 30),        "closing_time": datetime(2026, 4, 27, 23, 59)    },    {        "id": 7,        "title": "Challenge 6",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 45,        "release_time": datetime(2026, 4, 28, 16, 30),        "closing_time": datetime(2026, 5, 4, 23, 59)    },    {        "id": 8,        "title": "Challenge 7",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 60,        "release_time": datetime(2026, 5, 5, 16, 30),        "closing_time": datetime(2026, 5, 11, 23, 59)    },    {        "id": 9,        "title": "Challenge 8",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 75,        "release_time": datetime(2026, 5, 12, 16, 30),        "closing_time": datetime(2026, 5, 18, 23, 59)    },    {        "id": 10,        "title": "Challenge 9",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 90,        "release_time": datetime(2026, 5, 19, 16, 30),        "closing_time": datetime(2026, 5, 25, 23, 59)    },    {        "id": 11,        "title": "Challenge 10",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 105,        "release_time": datetime(2026, 6, 2, 16, 30),        "closing_time": datetime(2026, 6, 8, 23, 59)    },    {        "id": 12,        "title": "Challenge 11",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 120,        "release_time": datetime(2026, 6, 9, 16, 30),        "closing_time": datetime(2026, 6, 15, 23, 59)    },    {        "id": 13,        "title": "Challenge 12",        "published": False,        "ciphertext": "",        "plaintext": "",        "tips": "",        "points_reward": 120,        "release_time": datetime(2026, 6, 16, 16, 30),        "closing_time": datetime(2026, 6, 30, 23, 59)    }]with app.app_context():    # Clear existing challenges    Challenges.query.delete()        # Add new challenges    for data in challenges_data:        challenge = Challenges(            id=data["id"]-1,  # Adjusting ID to be zero-based # type: ignore            title=data["title"], # type: ignore            published=data["published"], # type: ignore            ciphertext=data["ciphertext"], # type: ignore            plaintext=data["plaintext"], # type: ignore            tips=data["tips"], # type: ignore            points_reward=data["points_reward"], # type: ignore            release_time=data["release_time"], # type: ignore            closing_time=data["closing_time"] # type: ignore        )        db.session.add(challenge)        db.session.commit()    print(f"Successfully added {len(challenges_data)} challenges!")        # Show summary    published = Challenges.query.filter_by(published=True).count()    unpublished = Challenges.query.filter_by(published=False).count()    print(f"Published: {published}, Unpublished: {unpublished}")
