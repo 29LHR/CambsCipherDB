@@ -297,13 +297,13 @@ def api_delete_user(id):
     return jsonify({'ok': True})
 
 @app.route('/api/leaderboard')
-@require_api_key
 def api_leaderboard():
     users = Users.query.order_by(Users.points.desc()).all()
     out = []
     for u in users:
         out.append({'id': u.id, 'username': u.username, 'school': u.school or 'N/A', 'points': u.points})
     return jsonify(out)
+
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', '5600'))
